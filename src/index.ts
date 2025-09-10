@@ -7,7 +7,7 @@ import { registerMyTool } from './tools/mytool'
 
 const cli = defineCommand({
   meta: {
-    name: 'mcp-instruct',
+    name: 'npm-search-server',
     version,
     description: 'Run the MCP starter with stdio, http, or sse transport',
   },

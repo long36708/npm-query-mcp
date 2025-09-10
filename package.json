@@ -1,24 +1,25 @@
 {
-  "name": "@instructa/mcp-starter",
+  "name": "npm-query-mcp",
   "type": "module",
   "version": "0.0.3",
   "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab",
-  "description": "Simple MCP Starter Package",
+  "description": "MCP server for searching npm",
   "contributors": [
     {
-      "name": "Kevin Kern",
-      "email": "kevin@instructa.org"
+      "name": "longmo",
+      "email": "zsl36708@gmail.com"
     }
   ],
   "license": "MIT",
-  "homepage": "https://instructa.ai",
+  "homepage": "https://github.com/long36708",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/instructa/mcp-starter.git"
+    "url": "git+ssh://git@github.com/long36708/npm-query-mcp.git"
   },
   "keywords": [
     "mcp",
-    "mcp-starter",
+    "npm-search-server",
+    "npm-query-mcp",
     "model-context-protocol"
   ],
   "exports": {
@@ -26,7 +27,8 @@
     "./cli": "./bin/cli.mjs"
   },
   "bin": {
-    "mcp-instruct": "./bin/cli.mjs"
+    "npm-search-server": "./bin/cli.mjs",
+    "npm-search-server.cmd": "./bin/cli.cmd"
   },
   "files": [
     "bin",
@@ -37,15 +39,15 @@
   },
   "scripts": {
     "build": "unbuild && npm run chmod-run",
-    "chmod-run": "node -e \"fs.chmodSync('dist/index.mjs', '755'); if (require('fs').existsSync('dist/cli.mjs')) require('fs').chmodSync('dist/cli.mjs', '755');\"",
+    "chmod-run": "node -e \"import('fs').then(fs => { try { fs.chmodSync('dist/index.mjs', '755'); } catch (e) { console.log('chmod failed (expected on Windows):', e.message); } if (fs.existsSync('dist/cli.mjs')) { try { fs.chmodSync('dist/cli.mjs', '755'); } catch (e) { console.log('chmod failed (expected on Windows):', e.message); } } })\"",
     "start": "nodemon --exec 'tsx src/index.ts'",
     "dev:prepare": "nr build",
     "inspect": "npx @modelcontextprotocol/inspector@latest",
-    "dev": "npx concurrently 'unbuild --stub' 'npm run inspect'",
+    "dev": "npx concurrently \"unbuild --stub\" \"npm run inspect\"",
     "run-cli": "node bin/cli.mjs",
-    "dev-stdio": "npx concurrently 'npm run run-cli' 'npm run inspect node ./bin/cli.mjs'",
-    "dev-http": "npx concurrently 'npm run run-cli -- --http --port 4200' 'npm run inspect http://localhost:4200/mcp'",
-    "dev-sse": "npx concurrently 'npm run run-cli -- --sse --port 4201' 'npm run inspect http://localhost:4201/sse'",
+    "dev-stdio": "npx concurrently \"npm run run-cli\" \"npm run inspect node ./bin/cli.mjs\"",
+    "dev-http": "npx concurrently \"npm run run-cli -- --http --port 4200\" \"npm run inspect http://localhost:4200/mcp\"",
+    "dev-sse": "npx concurrently \"npm run run-cli -- --sse --port 4201\" \"npm run inspect http://localhost:4201/sse\"",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "typecheck": "tsc --noEmit",
